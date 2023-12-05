@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           font-family: 'Aldrich', sans-serif;
+			background-color: lightblue;
+        }
+
+        .interactive-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 60%;
+            min-height: 300px;
+            background-color: #fff;
+        }
+
+        .interactive-box * {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: darkseagreen;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="interactive-box" role="region" aria-label="Interactive Questions Box">
+        <h2 id="currentQuestion"></h2>
+        <blockquote id="currentAnswer" style="display:none;"></blockquote>
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+        <button id="nextBtn" style="display:none">Next</button>
+    </div>
+<script>
+	const questions = [
+    "Would you eat chicken with the skin?",
+    "Did you know how to roast a turkey?",
+    "Have you ever made pie before?",
+    "Do you pay attention to table manners?",
+];
+
+const answers = [
+    `"Ashima would not have touched the chicken, even if permitted; Americans eat their chicken in its skin” (page 5)`,
+    `"They learn to roast turkeys, albeit rubbed with garlic and cumin and cayenne, at Thanksgiving.” (page 64)`,
+    `"Moushumi had gone out and bought a rolling pin, made an apple pie for the first time in her life.” (page 270)`,
+    `"He grows bored of eating the same thing day after day, and one evening he discreetly pushes the remaining food to the side. With his index finger, in the traces of leftover sauce, he begins to draw on his plate. He plays tic-tac-toe. "Finish," his father says, glancing up from his magazine. "Don't play with food that way." "I'm full, Baba." "There's still some food on your plate." "Baba, I can't." His father's plate is polished clean, the chicken bones denuded of cartilage and chewed to a pinkish pulp, the bay leaf and cinnamon stick as good as new. Ashoke shakes his head at Gogol, disapproving, unyielding. Each day Ashoke is pained by the half-eaten sandwiches people toss into garbage cans on campus, apples abandoned after one or two bites. "Finish it, Gogol. At your age I ate tin.” " (page 55) <br> “Unlike her compliant older brother, Sonia, seven months old, refuses all the food. She plays with the dirt they've dug up from the yard and threatens to put the dollar bill into her mouth. "This one," one of the guests remarks, "this one is the true American."(page 63)"`,
+];
+
+let currentIndex = 0;
+
+const questionElement = document.getElementById('currentQuestion');
+const answerElement = document.getElementById('currentAnswer');
+const yesButton = document.getElementById('yesBtn');
+const noButton = document.getElementById('noBtn');
+const nextButton = document.getElementById('nextBtn');
+
+questionElement.textContent = questions[currentIndex];
+
+yesButton.addEventListener('click', () => showAnswer());
+noButton.addEventListener('click', () => showAnswer());
+
+nextButton.addEventListener('click', () => {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+        questionElement.textContent = questions[currentIndex];
+        answerElement.style.display = 'none';
+        nextButton.style.display = 'none';
+        yesButton.style.display = 'inline-block';
+        noButton.style.display = 'inline-block';
+    } else {
+        alert('No more questions');
+    }
+});
+
+function showAnswer() {
+    answerElement.textContent = answers[currentIndex];
+    answerElement.style.display = 'block';
+    yesButton.style.display = 'none';
+    noButton.style.display = 'none';
+    nextButton.style.display = 'inline-block';
+}
+		</script>
+</body>
+</html>
