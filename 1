@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Generator</title>
+	<meta charset="UTF-8">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aldrich&display=swap" rel="stylesheet">
+  <style>
+      body {
+      text-align: center;
+      margin-top: 7%;
+      background-color: #faf6e8;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .locked-btn {
+      background-color: lightgray;
+      color: gray;
+      cursor: not-allowed;
+    }
+
+    .select-btn {
+      margin: 5px;
+    }
+
+    .flag {
+      font-size: 4em;
+      font-family: 'Aldrich', sans-serif;
+      text-shadow: 0 0 4px gray;
+    }
+
+    .block {
+      width: 50%;
+      border-radius: 4px;
+      margin: 5px;
+      padding: 10px;
+      overflow: hidden;
+      position: relative;
+      margin-left: 3%;
+      margin-right: 3%;
+      border: 1px solid black;
+    }
+	
+    .block::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      transform: translateY(2px);
+      margin-left: 1%;
+      margin-right: 4%;
+    }
+
+    .name-display {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-family: "Times New Roman", sans-serif;
+      font-size: 1.5em;
+    }
+
+    .generate-btn,
+    .select-btn {
+      padding: 6px 12px;
+      font-size: 1em;
+      margin-top: 10px;
+      background-color: lightcyan;
+    }
+	   .generate-btn:hover,
+    .select-btn:hover {
+      transition: 0.1s;
+      background-color: #00744E; /* dark green color for better contrast */
+      color: lemonchiffon;
+      text-decoration: underline;
+    }
+
+
+    #copyright {
+      background-color: lightgrey;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      bottom: 0px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" aria-label="Main Content" role="main">
+  <div class="block">
+    <h2 class="flag" id="americanFlag">America</h2>
+    <div class="name-display" id="americanNameDisplay" aria-label="American name display" role="status"></div>
+    <button id="americanGenerateBtn" class="generate-btn" onclick="generateAmericanName()" aria-controls="americanNameDisplay">Generate</button>
+  </div>
+  <div class="block">
+    <h2 class="flag" id="indianFlag">India</h2>
+    <div class="name-display" id="indianNameDisplay" aria-label="Indian name display" role="status"></div>
+    <button id="indianGenerateBtn" class="generate-btn" onclick="generateIndianName()" aria-controls="indianNameDisplay">Generate</button>
+  </div>   
+</div>
+<script>
+	  // Define American names array
+		const AmericanNames = [
+	  "John   ----   You are in the 1940s, this is one of the most popular names at the time.", "Jane   ----   You are in the 1940s, this is one of the most popular names at the time.", "Michael   ----   You are a huge fan of Michael Jackson and named your son after him.", "Britney   ----   You are a big fan of Britney Jean Spears who is an American singer, that is the Princess of Pop.", "Alexander   ----   You want your son to be just as great as Alexander The Great." ,"Diana   ----   Diana means Moon Goddess in Latin.", "Nate   ----   You are a religious person and this name means gift of God or God has given.", "Hermione   ----   You are a crazy fan of Harry Potter and you want your daughter to be smart like the character from HP.", "Sheldon   ----   You are a Young Sheldon or Big Bang Theory lover and want them to be just as smart as Sheldon Cooper.", "Billie   ----   You are a big fan of Billie Eilish, and named your daughter after her.", "Mario   ----   You are from the Super Mario era and named your son after the famous Mario.", "Juliet   ----   You are a huge William Shakespeare fan, especially the play Romeo and Juliet last you named your daughter after Juliet.", "George Jr   ----   Your name is George and you named your son after yourself.", "Stella   ----   Stella means star in Greek and you want your daughter to shine like a star.", "Alden   ----   Alden means old friend or wise protector. You want your son to have the qualities of loyalty, wisdom, and care.", "Erica   ----   You are from America, and You can nott spell America without Erica (This is a Stranger Things quote, but Initially you picked this name out of the love of the country)"
+	];
+
+	// Define Indian names array
+	const IndianNames = [
+	"Aarav   ----   Aarav is a Sanskrit name meaning peaceful or calm.",
+	 " Vihaan   ----   Vihaan is a Hindi name meaning dawn or morning.",
+	  "Advait   ----   Advait is a Sanskrit name meaning unique or one-of-a-kind.",
+	"  Arjun   ----   Arjun is a popular Indian name, derived from the mythological character Arjuna in the Mahabharata.",
+	"  Vivaan   ----   Vivaan is a Hindi name meaning full of life or energetic.",
+	"  Reyansh   ----   Reyansh is a modern Indian name meaning ray of light or sunbeam.",
+	"  Mohammed   ----   Mohammed is a common name in India, often given to honor the Islamic prophet Muhammad.",
+	"  Ishaan   ----   Ishaan is a Hindi name meaning sun or the first ray of light.",
+	"  Saathvik   ----   Saathvik is a Sanskrit name meaning pure or virtuous.",
+	"  Aryan   ----   Aryan is a Sanskrit name meaning noble or honorable.",
+	"  Ananya   ----   Ananya is a popular Indian name meaning unique or without a second.",
+	"  Aaradhya   ----   Aaradhya is a Hindi name meaning worshiped or blessed.",
+	"  Saanvi   ----   Saanvi is a Sanskrit name meaning goddess Lakshmi or one who is followed by good fortune",
+	"  Diya   ----   Diya is a common Indian name meaning lamp or light.",
+	"  Navya   ----   Navya is a Hindi name meaning young or new.",
+	"  Zara   ----   Zara is a popular Indian name meaning princess or radiant."
+	];
+function getRandomName(namesArray) {
+  var nameIndex = Math.floor(Math.random() * namesArray.length);
+  return namesArray[nameIndex];
+}
+
+function generateName(block, namesArray) {
+  const nameDisplay = document.getElementById(block + "NameDisplay");
+  nameDisplay.textContent = getRandomName(namesArray);
+}
+
+function generateAmericanName() {
+  generateName("american", AmericanNames);
+}
+
+function generateIndianName() {
+  generateName("indian", IndianNames);
+}
+</script>	
+	
+</body>
+</html>
